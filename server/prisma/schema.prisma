@@ -1,0 +1,44 @@
+datasource postgres {
+  provider = "postgresql"
+  url      = env("POSTGRESQL_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  createdAt DateTime @default(now())
+  firstName String?
+  id        String   @id @default(cuid())
+  lastName  String?
+  password  String
+  roles     String[]
+  updatedAt DateTime @updatedAt
+  username  String   @unique
+}
+
+model Reservation {
+  arrivE                     String
+  commentairesSupplMentaires String?
+  conducteurAssign           Chauffeur? @relation(fields: [conducteurAssignId], references: [id])
+  conducteurAssignId         String?
+  createdAt                  DateTime   @default(now())
+  dPart                      String
+  id                         String     @id @default(cuid())
+  nombreDePersonnes          Int?
+  nomDuClient                Int
+  quand                      DateTime
+  updatedAt                  DateTime   @updatedAt
+  vol                        String?
+}
+
+model Chauffeur {
+  createdAt              DateTime      @default(now())
+  id                     String        @id @default(cuid())
+  modLeDeVoiture         String?
+  nomDuChauffeur         String
+  plaqueDImmatriculation String
+  reservations           Reservation[]
+  updatedAt              DateTime      @updatedAt
+}
